@@ -1897,7 +1897,8 @@ end:
 	mutex_unlock(&dev->lock);
 }
 
-int ion_secure_heap(struct ion_device *dev, int heap_id)
+int ion_secure_heap(struct ion_device *dev, int heap_id, int version,
+			void *data)
 {
 	struct rb_node *n;
 	int ret_val = 0;
@@ -1914,7 +1915,7 @@ int ion_secure_heap(struct ion_device *dev, int heap_id)
 		if (ION_HEAP(heap->id) != heap_id)
 			continue;
 		if (heap->ops->secure_heap)
-			ret_val = heap->ops->secure_heap(heap);
+			ret_val = heap->ops->secure_heap(heap, version, data);
 		else
 			ret_val = -EINVAL;
 		break;
@@ -1923,7 +1924,8 @@ int ion_secure_heap(struct ion_device *dev, int heap_id)
 	return ret_val;
 }
 
-int ion_unsecure_heap(struct ion_device *dev, int heap_id)
+int ion_unsecure_heap(struct ion_device *dev, int heap_id, int version,
+			void *data)
 {
 	struct rb_node *n;
 	int ret_val = 0;
@@ -1940,7 +1942,7 @@ int ion_unsecure_heap(struct ion_device *dev, int heap_id)
 		if (ION_HEAP(heap->id) != heap_id)
 			continue;
 		if (heap->ops->secure_heap)
-			ret_val = heap->ops->unsecure_heap(heap);
+			ret_val = heap->ops->unsecure_heap(heap, version, data);
 		else
 			ret_val = -EINVAL;
 		break;
