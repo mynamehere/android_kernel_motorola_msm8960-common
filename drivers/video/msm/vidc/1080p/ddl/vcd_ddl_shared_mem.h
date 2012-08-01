@@ -139,7 +139,7 @@ void vidc_sm_get_min_yc_dpb_sizes(struct ddl_buf_addr *shared_mem,
 void vidc_sm_set_metadata_enable(struct ddl_buf_addr *shared_mem,
 	u32 extradata_enable, u32 qp_enable, u32 concealed_mb_enable,
 	u32 vc1Param_enable, u32 sei_nal_enable, u32 vui_enable,
-	u32 enc_slice_size_enable);
+	u32 enc_slice_size_enable, u32 mp2_data_dump_enable);
 void vidc_sm_get_metadata_status(struct ddl_buf_addr *shared_mem,
 	u32 *pb_metadata_present);
 void vidc_sm_get_metadata_display_index(struct ddl_buf_addr *shared_mem,
@@ -198,10 +198,14 @@ void vidc_sm_get_mp2datadump_status(struct ddl_buf_addr
 void vidc_sm_set_mp2datadump_enable(struct ddl_buf_addr *shared_mem,
 	struct ddl_mp2_datadumpenabletype *ddl_mp2_datadump_enable);
 void vidc_sm_set_mp2datadumpbuffer(struct ddl_buf_addr *shared_mem,
+<<<<<<< HEAD
 	u32 mp2datadumpaddr, u32 mp2datadumpsize);
 void vidc_sm_set_h264_encoder_timing_info(struct ddl_buf_addr *shared_mem,
 	u32 num_units_in_tick, u32 time_scale);
 void vidc_sm_get_mp2common_status(struct ddl_buf_addr *shared_mem,
 	u32 *seq_end_code_present);
+=======
+		u32 mp2datadumpaddr, u32 mp2datadumpsize);
+>>>>>>> 833942e... msm:vidc: Add the support for MPEG-2 extension and user data
 
 #endif
