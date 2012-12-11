@@ -1264,7 +1264,7 @@ static u32 ddl_decoder_output_done_callback(
 				output_vcd_frm->flags |=
 					VCD_FRAME_FLAG_DATACORRUPT;
 		}
-		if (decoder->codec.codec != VCD_CODEC_H264 ||
+		if (decoder->codec.codec != VCD_CODEC_H264 &&
 			decoder->codec.codec != VCD_CODEC_MPEG2)
 			output_vcd_frm->flags &= ~VCD_FRAME_FLAG_DATACORRUPT;
 		if (decoder->codec.codec == VCD_CODEC_MPEG2) {
