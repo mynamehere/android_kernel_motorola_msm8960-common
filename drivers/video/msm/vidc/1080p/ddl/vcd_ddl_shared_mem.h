@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2010-2013, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -179,19 +179,29 @@ void vidc_sm_set_error_concealment_config(struct ddl_buf_addr *shared_mem,
 void vidc_sm_set_decoder_stuff_bytes_consumption(
 	struct ddl_buf_addr *shared_mem,
 	enum vidc_sm_num_stuff_bytes_consume_info consume_info);
-void vidc_sm_set_video_core_timeout_value(struct ddl_buf_addr *shared_mem,
-    u32 timeout);
 void vidc_sm_get_aspect_ratio_info(struct ddl_buf_addr *shared_mem,
 	enum vcd_codec codec, struct vcd_aspect_ratio *aspect_ratio_info);
 void vidc_sm_set_encoder_slice_batch_int_ctrl(struct ddl_buf_addr *shared_mem,
-    u32 slice_batch_int_enable);
+	u32 slice_batch_int_enable);
 void vidc_sm_get_num_slices_comp(struct ddl_buf_addr *shared_mem,
-    u32 *num_slices_comp);
+	u32 *num_slices_comp);
 void vidc_sm_set_encoder_batch_config(struct ddl_buf_addr *shared_mem,
         u32 num_slices,
         u32 input_addr, u32 output_addr,
         u32 output_buffer_size);
 void vidc_sm_get_encoder_batch_output_size(struct ddl_buf_addr *shared_mem,
-        u32 *output_buffer_size);
+	u32 *output_buffer_size);
+void vidc_sm_set_video_core_timeout_value(struct ddl_buf_addr *shared_mem,
+	u32 timeout);
+void vidc_sm_get_mp2datadump_status(struct ddl_buf_addr
+		*shared_mem, u32 *ext_userdata_present);
+void vidc_sm_set_mp2datadump_enable(struct ddl_buf_addr *shared_mem,
+	struct ddl_mp2_datadumpenabletype *ddl_mp2_datadump_enable);
+void vidc_sm_set_mp2datadumpbuffer(struct ddl_buf_addr *shared_mem,
+	u32 mp2datadumpaddr, u32 mp2datadumpsize);
+void vidc_sm_set_h264_encoder_timing_info(struct ddl_buf_addr *shared_mem,
+	u32 num_units_in_tick, u32 time_scale);
+void vidc_sm_get_mp2common_status(struct ddl_buf_addr *shared_mem,
+	u32 *seq_end_code_present);
 
 #endif

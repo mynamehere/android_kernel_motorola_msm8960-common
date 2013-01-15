@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2010-2013, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -251,6 +251,53 @@
 #define VIDC_SM_TIMEOUT_VALUE_ADDR        0x0158
 #define VIDC_SM_TIMEOUT_VALUE_BMSK        0xffffffff
 #define VIDC_SM_TIMEOUT_VALUE_SHFT        0
+
+#define VIDC_SM_MP2_DATA_DUMP_CONTROL_ADDR                        0x0194
+#define VIDC_SM_MP2_USERDATA_DUMP_ENABLE_BMSK                     0x00000300
+#define VIDC_SM_MP2_USERDATA_DUMP_ENABLE_SHFT                     8
+#define VIDC_SM_MP2_PICT_TEMP_DUMP_ENABLE_BMSK                    0x00000080
+#define VIDC_SM_MP2_PICT_TEMP_DUMP_ENABLE_SHFT                    7
+#define VIDC_SM_MP2_PICT_SPAT_EXT_DUMP_ENABLE_BMSK                0x00000040
+#define VIDC_SM_MP2_PICT_SPAT_EXT_DUMP_ENABLE_SHFT                6
+#define VIDC_SM_MP2_PICT_DISP_EXT_DUMP_ENABLE_BMSK                0x00000020
+#define VIDC_SM_MP2_PICT_DISP_EXT_DUMP_ENABLE_SHFT                5
+#define VIDC_SM_MP2_COPYRIGHT_EXT_DUMP_ENABLE_BMSK                0x00000010
+#define VIDC_SM_MP2_COPYRIGHT_EXT_DUMP_ENABLE_SHFT                4
+#define VIDC_SM_MP2_QMATRIX_EXT_DUMP_ENABLE_BMSK                  0x00000008
+#define VIDC_SM_MP2_QMATRIX_EXT_DUMP_ENABLE_SHFT                  3
+#define VIDC_SM_MP2_SCAL_EXT_DUMP_ENABLE_BMSK                     0x00000004
+#define VIDC_SM_MP2_SCAL_EXT_DUMP_ENABLE_SHFT                     2
+#define VIDC_SM_MP2_SEQ_DISP_EXT_DUMP_ENABLE_BMSK                 0x00000002
+#define VIDC_SM_MP2_SEQ_DISP_EXT_DUMP_ENABLE_SHFT                 1
+#define VIDC_SM_MP2_SEQ_EXT_DUMP_ENABLE_BMSK                      0x00000001
+#define VIDC_SM_MP2_SEQ_EXT_DUMP_ENABLE_SHFT                      0
+
+#define VIDC_SM_MP2_DATA_DUMP_STATUS_ADDR                         0x0198
+#define VIDC_SM_MP2_USERDATA_DUMP_STATUS_BMSK                     0x00000300
+#define VIDC_SM_MP2_USERDATA_DUMP_STATUS_SHFT                     8
+#define VIDC_SM_MP2_PICT_TEMP_DUMP_STATUS_BMSK                    0x00000080
+#define VIDC_SM_MP2_PICT_TEMP_DUMP_STATUS_SHFT                    7
+#define VIDC_SM_MP2_PICT_SPAT_EXT_DUMP_STATUS_BMSK                0x00000040
+#define VIDC_SM_MP2_PICT_SPAT_EXT_DUMP_STATUS_SHFT                6
+#define VIDC_SM_MP2_PICT_DISP_EXT_DUMP_STATUS_BMSK                0x00000020
+#define VIDC_SM_MP2_PICT_DISP_EXT_DUMP_STATUS_SHFT                5
+#define VIDC_SM_MP2_COPYRIGHT_EXT_DUMP_STATUS_BMSK                0x00000010
+#define VIDC_SM_MP2_COPYRIGHT_EXT_DUMP_STATUS_SHFT                4
+#define VIDC_SM_MP2_QMATRIX_EXT_DUMP_STATUS_BMSK                  0x00000008
+#define VIDC_SM_MP2_QMATRIX_EXT_DUMP_STATUS_SHFT                  3
+#define VIDC_SM_MP2_SCAL_EXT_DUMP_STATUS_BMSK                     0x00000004
+#define VIDC_SM_MP2_SCAL_EXT_DUMP_STATUS_SHFT                     2
+#define VIDC_SM_MP2_SEQ_DISP_EXT_DUMP_STATUS_BMSK                 0x00000002
+#define VIDC_SM_MP2_SEQ_DISP_EXT_DUMP_STATUS_SHFT                 1
+#define VIDC_SM_MP2_SEQ_EXT_DUMP_STATUS_BMSK                      0x00000001
+#define VIDC_SM_MP2_SEQ_EXT_DUMP_STATUS_SHFT                      0
+
+#define VIDC_SM_MP2_DATA_DUMP_BUFFER_ADDR                         0x01a4
+#define VIDC_SM_MP2_DATA_DUMP_BUFFER_SIZE_ADDR                    0x01a8
+
+#define VIDC_SM_MP2_COMMON_STATUS_DEC_ORDER_ADDR                  0x01b0
+#define VIDC_SM_MP2_SEQ_END_CODE_BMSK                             0x00000002
+#define VIDC_SM_MP2_SEQ_END_CODE_SHIFT                            1
 
 #define VIDC_SM_ENC_EXT_CTRL_CLOSED_GOP_ENABLE_BMSK	0x40
 #define VIDC_SM_ENC_EXT_CTRL_CLOSED_GOP_ENABLE_SHFT	6
@@ -1037,4 +1084,15 @@ void vidc_sm_get_encoder_batch_output_size(struct ddl_buf_addr *shared_mem,
 {
     *output_buffer_size = DDL_MEM_READ_32(shared_mem,
             VIDC_SM_BATCH_OUTPUT_SIZE_ADDR);
+}
+
+void vidc_sm_get_mp2common_status(struct ddl_buf_addr *shared_mem,
+	u32 *seq_end_code_present)
+{
+	u32 status;
+	status = DDL_MEM_READ_32(shared_mem,
+			VIDC_SM_MP2_COMMON_STATUS_DEC_ORDER_ADDR);
+	*seq_end_code_present = (u32) VIDC_GETFIELD(status,
+				VIDC_SM_MP2_SEQ_END_CODE_BMSK,
+				VIDC_SM_MP2_SEQ_END_CODE_SHIFT);
 }
