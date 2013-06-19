@@ -808,7 +808,7 @@ static int audpcm_ion_add(struct audio *audio,
 		rc = -ENOMEM;
 		goto end;
 	}
-	handle = ion_import_fd(audio->client, info->fd);
+	handle = ion_import_dma_buf(audio->client, info->fd);
 	if (IS_ERR_OR_NULL(handle)) {
 		pr_err("%s: could not get handle of the given fd\n", __func__);
 		goto import_error;
