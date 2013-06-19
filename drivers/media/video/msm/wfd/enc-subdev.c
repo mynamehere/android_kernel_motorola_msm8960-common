@@ -273,7 +273,7 @@ static long venc_open(struct v4l2_subdev *sd, void *arg)
 	struct venc_inst *inst;
 	struct video_client_ctx *client_ctx;
 	struct venc_msg_ops *vmops  =  arg;
-	int flags = 0;
+	int heap_mask = 0;
 	mutex_lock(&venc_p.lock);
 	client_index = venc_get_empty_client_index();
 	if (client_index < 0) {
@@ -297,7 +297,7 @@ static long venc_open(struct v4l2_subdev *sd, void *arg)
 	inst->streaming = false;
 	if (vmops->secure) {
 		WFD_MSG_ERR("OPENING SECURE SESSION\n");
-		flags |= VCD_CP_SESSION;
+		heap_mask |= VCD_CP_SESSION;
 	}
 	if (vcd_get_ion_status()) {
 		client_ctx->user_ion_client = vcd_get_ion_client();
@@ -308,7 +308,7 @@ static long venc_open(struct v4l2_subdev *sd, void *arg)
 	}
 
 	rc = vcd_open(venc_p.device_handle, false, venc_cb,
-				inst, flags);
+				inst, heap_mask);
 	if (rc) {
 		WFD_MSG_ERR("vcd_open failed, rc = %d\n", rc);
 		rc = -ENODEV;
@@ -1567,7 +1567,7 @@ static long venc_alloc_recon_buffers(struct v4l2_subdev *sd, void *arg)
 	struct vcd_property_enc_recon_buffer *ctrl = NULL;
 	unsigned long phy_addr;
 	int i = 0;
-	int flags = 0;
+	int heap_mask = 0;
 	u32 len;
 	control.width = inst->width;
 	control.height = inst->height;
@@ -1580,11 +1580,11 @@ static long venc_alloc_recon_buffers(struct v4l2_subdev *sd, void *arg)
 		WFD_MSG_ERR("Failed to get recon buf size\n");
 		goto err;
 	}
-	flags = ION_HEAP(ION_CP_MM_HEAP_ID);
+	heap_mask = ION_HEAP(ION_CP_MM_HEAP_ID);
 	if (inst->secure)
-		flags |= ION_SECURE;
+		heap_mask |= ION_SECURE;
 	else
-		flags |= ION_HEAP(ION_IOMMU_HEAP_ID);
+		heap_mask |= ION_HEAP(ION_IOMMU_HEAP_ID);
 
 	if (vcd_get_ion_status()) {
 		for (i = 0; i < 4; ++i) {
@@ -1595,11 +1595,11 @@ static long venc_alloc_recon_buffers(struct v4l2_subdev *sd, void *arg)
 			ctrl->user_virtual_addr = (void *)i;
 			client_ctx->recon_buffer_ion_handle[i]
 				= ion_alloc(client_ctx->user_ion_client,
-			control.size, SZ_8K, flags);
+			control.size, SZ_8K, heap_mask, 0);
 
 			ctrl->kernel_virtual_addr = ion_map_kernel(
 				client_ctx->user_ion_client,
-				client_ctx->recon_buffer_ion_handle[i],	0);
+				client_ctx->recon_buffer_ion_handle[i]);
 
 			rc = ion_map_iommu(client_ctx->user_ion_client,
 				client_ctx->recon_buffer_ion_handle[i],
