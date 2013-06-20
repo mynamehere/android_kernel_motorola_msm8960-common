@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2010-2013, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -362,13 +362,13 @@ u32 ddl_fw_init(struct ddl_buf_addr *dram_base)
 			pr_err("Failed to enable footswitch");
 			return false;
 		}
-		if(res_trk_enable_iommu_clocks()) {
+		if (res_trk_enable_iommu_clocks()) {
 			res_trk_disable_footswitch();
 			pr_err("Failed to enable iommu clocks\n");
 			return false;
 		}
 		dram_base->pil_cookie = pil_get("vidc");
-		if(res_trk_disable_iommu_clocks())
+		if (res_trk_disable_iommu_clocks())
 			pr_err("Failed to disable iommu clocks\n");
 		if (IS_ERR_OR_NULL(dram_base->pil_cookie)) {
 			pr_err("pil_get failed\n");
@@ -387,32 +387,32 @@ u32 ddl_fw_init(struct ddl_buf_addr *dram_base)
 void ddl_fw_release(struct ddl_buf_addr *dram_base)
 {
 	void *cookie = dram_base->pil_cookie;
-   if (res_trk_is_cp_enabled() &&
-         res_trk_check_for_sec_session()) {
-      res_trk_close_secure_session();
-      if (IS_ERR_OR_NULL(cookie)){
-         pr_err("Invalid params");
-         return;
-      }
-      if (res_trk_enable_footswitch()) {
-         pr_err("Failed to enable footswitch");
-         return;
-      }
-      if(res_trk_enable_iommu_clocks()) {
-         res_trk_disable_footswitch();
-         pr_err("Failed to enable iommu clocks\n");
-         return;
-      }
-      pil_put(cookie);
-      if(res_trk_disable_iommu_clocks())
-         pr_err("Failed to disable iommu clocks\n");
-      if(res_trk_disable_footswitch())
-         pr_err("Failed to disable footswitch\n");
-   } else {
-         if (res_trk_check_for_sec_session())
-            res_trk_close_secure_session();
+	if (res_trk_is_cp_enabled() &&
+		res_trk_check_for_sec_session()) {
+		res_trk_close_secure_session();
+		if (IS_ERR_OR_NULL(cookie)) {
+			pr_err("Invalid params");
+		return;
+	}
+	if (res_trk_enable_footswitch()) {
+		pr_err("Failed to enable footswitch");
+		return;
+	}
+	if (res_trk_enable_iommu_clocks()) {
+		res_trk_disable_footswitch();
+		pr_err("Failed to enable iommu clocks\n");
+		return;
+	}
+	pil_put(cookie);
+	if (res_trk_disable_iommu_clocks())
+		pr_err("Failed to disable iommu clocks\n");
+	if (res_trk_disable_footswitch())
+		pr_err("Failed to disable footswitch\n");
+	} else {
+	if (res_trk_check_for_sec_session())
+		res_trk_close_secure_session();
 		res_trk_release_fw_addr();
-   }
+	}
 }
 
 void ddl_set_core_start_time(const char *func_name, u32 index)

@@ -516,7 +516,6 @@ static u32 vid_enc_close_client(struct video_client_ctx *client_ctx)
 	return true;
 }
 
-
 static int vid_enc_open(struct inode *inode, struct file *file)
 {
 	s32 client_index;

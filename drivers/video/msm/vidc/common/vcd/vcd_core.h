@@ -210,8 +210,8 @@ struct vcd_clnt_ctxt {
 	u32 vcd_enable_ion;
 	struct vcd_clnt_ctxt *next;
 	u32 meta_mode;
-	int secure;
 	int perf_set_by_client;
+	int secure;
 	bool is_turbo_enabled;
 };
 

@@ -535,9 +535,6 @@ int res_trk_update_bus_perf_level(struct vcd_dev_ctxt *dev_ctxt, u32 perf_level)
 	bool turbo_supported =
 		!resource_context.vidc_platform_data->disable_turbo;
 
-	if (dev_ctxt->turbo_mode_set)
-		return rc;
-
 	cctxt_itr = dev_ctxt->cctxt_list_head;
 	while (cctxt_itr) {
 		if (cctxt_itr->decoding)
@@ -584,6 +581,7 @@ u32 res_trk_set_perf_level(u32 req_perf_lvl, u32 *pn_set_perf_lvl,
 			__func__, dev_ctxt);
 		return false;
 	}
+
 	VCDRES_MSG_LOW("%s(), req_perf_lvl = %d", __func__, req_perf_lvl);
 
 	if (!turbo_supported && req_perf_lvl > RESTRK_1080P_MAX_PERF_LEVEL) {
@@ -615,7 +613,6 @@ u32 res_trk_set_perf_level(u32 req_perf_lvl, u32 *pn_set_perf_lvl,
 		vidc_freq = vidc_clk_table[4];
 		*pn_set_perf_lvl = RESTRK_1080P_TURBO_PERF_LEVEL;
 	}
-
 	if (!turbo_supported &&
 		 *pn_set_perf_lvl == RESTRK_1080P_TURBO_PERF_LEVEL) {
 		vidc_freq = vidc_clk_table[2];
@@ -753,7 +750,7 @@ u32 res_trk_get_core_type(void){
 u32 res_trk_get_firmware_addr(struct ddl_buf_addr *firm_addr)
 {
 	int rc = 0;
-	size_t size= 0;
+	size_t size = 0;
 	if (!firm_addr || resource_context.firmware_addr.mapped_buffer) {
 		pr_err("%s() invalid params", __func__);
 		return -EINVAL;
@@ -781,7 +778,7 @@ u32 res_trk_get_firmware_addr(struct ddl_buf_addr *firm_addr)
 		goto fail_map;
 	}
 	memcpy(firm_addr, &resource_context.firmware_addr,
-			sizeof(struct ddl_buf_addr));
+		sizeof(struct ddl_buf_addr));
 	return 0;
 fail_map:
 	res_trk_pmem_free(&resource_context.firmware_addr);
