@@ -982,7 +982,7 @@ static u32 vid_dec_set_meta_buffers(struct video_client_ctx *client_ctx,
 		vcd_meta_buffer->kernel_virtual_addr =
 			(u8 *) ion_map_kernel(
 			client_ctx->user_ion_client,
-			client_ctx->meta_buffer_ion_handle);
+			client_ctx->meta_buffer_ion_handle, ionflag);
 		if (!vcd_meta_buffer->kernel_virtual_addr) {
 			ERR("%s(): get_ION_kernel virtual addr failed\n",
 				 __func__);
@@ -1039,7 +1039,7 @@ static u32 vid_dec_set_meta_buffers(struct video_client_ctx *client_ctx,
 		vcd_meta_buffer->kernel_virt_addr_iommu =
 			(u8 *) ion_map_kernel(
 			client_ctx->user_ion_client,
-			client_ctx->meta_buffer_iommu_ion_handle);
+			client_ctx->meta_buffer_iommu_ion_handle, ionflag);
 		if (!vcd_meta_buffer->kernel_virt_addr_iommu) {
 			ERR("%s(): get_ION_kernel virtual addr failed\n",
 				 __func__);
